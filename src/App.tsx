@@ -9,18 +9,23 @@ import SearchBar from "./components/searchBar/SearchBar";
 import { Toaster } from 'react-hot-toast';
 import './App.css'
 
-function App() {
-  const [images, setImages] = useState([]);
+interface Image {
+  id: string;
+  urls: {
+    small: string;
+  }
+}
+
+const App: React.FC = () => {
+  const [images, setImages] = useState<Image[]>([]);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const numPage = 1;
-  const numResultsPerPage = 20;
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
-  const fetchImages = async (searchQuery, numPage) => {
+  const fetchImages = async (searchQuery: string, numPage: number): Promise<Image[]> => {
     try {
       setLoading(true);
       const res = await axios.get(
@@ -32,7 +37,7 @@ function App() {
         }
       );
       return res.data.results;
-    } catch (error) {
+    } catch (error: any) {
       setError(error.message);
       return[];
     } finally {
@@ -55,12 +60,12 @@ function App() {
     fetchData();
   }, [query, page]);
 
-  function handleSubmit(searchQuery) {
+  const handleSubmit = (searchQuery: string) => {
     setQuery(searchQuery);
     setError(null);
     setPage(1);
     setImages([]);
-  }
+  };
 
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);

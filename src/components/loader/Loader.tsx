@@ -1,6 +1,7 @@
 import { ThreeDots } from "react-loader-spinner";
+import React from "react";
 
-export default function Loader() {
+const Loader: React.FC = () => {
     return (
         <ThreeDots
         visible={true}
@@ -12,3 +13,5 @@ export default function Loader() {
         />
     );
 }
+
+export default Loader;
