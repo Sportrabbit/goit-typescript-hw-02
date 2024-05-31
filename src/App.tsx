@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ErrorMessage from "./components/errorMessage/ErrorMessage";
 import ImageGallery from "./components/imageGallery/ImageGallery";
@@ -7,23 +7,24 @@ import Loader from "./components/loader/Loader";
 import LoadMoreBtn from "./components/loadMoreBtn/LoadMoreBtn";
 import SearchBar from "./components/searchBar/SearchBar";
 import { Toaster } from 'react-hot-toast';
-import './App.css'
+import './App.css';
 
 interface Image {
   id: string;
   urls: {
     small: string;
-  }
+  };
 }
 
 const App: React.FC = () => {
-  const [images, setImages] = useState<Image[]>([]);
+  const [images, setImages] = useState<Image[]>([]); 
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null); 
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null); 
+
 
   const fetchImages = async (searchQuery: string, numPage: number): Promise<Image[]> => {
     try {
@@ -39,7 +40,7 @@ const App: React.FC = () => {
       return res.data.results;
     } catch (error: any) {
       setError(error.message);
-      return[];
+      return [];
     } finally {
       setLoading(false);
     }
@@ -53,7 +54,7 @@ const App: React.FC = () => {
           setImages((prevImg) => [...prevImg, ...newImages]);
         }
       } catch (error) {
-        setError(error.message)
+        setError(error.message);
       }
     };
 
@@ -71,7 +72,7 @@ const App: React.FC = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const modalOpen = (photo) => {
+  const modalOpen = (photo: Image) => {
     setSelectedImage(photo);
     setModalIsOpen(true);
   };
@@ -82,21 +83,22 @@ const App: React.FC = () => {
 
   return (
     <>
-    <SearchBar onSubmit={handleSubmit}/>
-    {error ? (
-      <ErrorMessage message={error} />
-    ) : (
-      <ImageGallery images={images} openModal={modalOpen} />
-    )}
-    {images.length > 0 && !error && <LoadMoreBtn onClick={handleLoadMore} />}
+      <SearchBar onSubmit={handleSubmit} />
+      {error ? (
+        <ErrorMessage message={error} />
+      ) : (
+        <ImageGallery images={images} openModal={modalOpen} />
+      )}
+      {images.length > 0 && !error && <LoadMoreBtn onClick={handleLoadMore} />}
 
-    {modalIsOpen && selectedImage && (
-      <ImageModal image={selectedImage} openModal={modalIsOpen} closeModal={closeModal} />
-    )}
-    {loading && <Loader />}
-    <Toaster position='top-right' reverseOrder={false} />
+      {modalIsOpen && selectedImage && (
+        <ImageModal image={selectedImage} openModal={modalIsOpen} closeModal={closeModal} />
+      )}
+      {loading && <Loader />}
+      <Toaster position='top-right' reverseOrder={false} />
     </>
   );
 }
 
-export default App
+export default App;
+
